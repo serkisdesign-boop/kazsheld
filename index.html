@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kazsheld — Охрана бизнеса без рисков и простоев</title>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      background: #0a0a0a;
+      color: #e8e8e8;
+      overflow-x: clip;
+      line-height: 1.6;
+    }
+    /* ─── PAGE BLOCKS LAYOUT ─── */
+    .page-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+      padding-top: calc(72px + 12px);
+    }
+    .page-blocks > section,
+    .page-blocks > footer {
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── TYPOGRAPHY SCALE ─── */
+    h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    h3 { font-size: clamp(1rem, 2vw, 1.3rem); font-weight: 600; }
+    p  { font-size: 1rem; color: #a0a0a0; }
+
+    /* ─── COLORS ─── */
+    :root {
+      --accent:   #c8a96e;
+      --accent2:  #8a6b3a;
+      --dark:     #0a0a0a;
+      --dark2:    #111111;
+      --dark3:    #1a1a1a;
+      --border:   rgba(255,255,255,0.08);
+      --text:     #e8e8e8;
+      --muted:    #a0a0a0;
+    }
+
+    /* ─── NAVBAR ─── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 5%;
+      height: 72px;
+      background: #0a0a0a;
+      backdrop-filter: none;
+      border-bottom: none;
+      transition: background 0.3s, border-bottom 0.3s, backdrop-filter 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.35rem; font-weight: 800; letter-spacing: 0.06em;
+      color: var(--text);
+      justify-self: start;
+      transition: color 0.3s;
+    }
+    .nav.scrolled .nav-logo { color: var(--text); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex; align-items: center; gap: 0;
+      justify-content: center;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--muted);
+      padding: 0.5rem 0.85rem;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav.scrolled .nav-links a { color: var(--muted); }
+    .nav.scrolled .nav-links a:hover { color: var(--text); }
+    .nav-cta-wrap {
+      display: flex; justify-content: flex-end; align-items: center;
+    }
+    .nav-cta {
+      background: var(--accent);
+      color: #000 !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      white-space: nowrap;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: #dbbf80 !important; }
+
+    /* ─── SECTION WRAPPER ─── */
+    .section { padding: 7rem 5%; }
+    /* Pill chip label */
+    .section-label {
+      display: inline-block;
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.35rem 1.05rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .section-title { color: var(--text); margin-bottom: 1.2rem; }
+    .section-title em { font-style: normal; color: var(--accent); }
+    .section-sub { max-width: 660px; margin-bottom: 3.5rem; }
+    /* Centered sections */
+    .section-center { text-align: center; }
+    .section-center .section-sub { margin-left: auto; margin-right: auto; }
+    /* Section separator — thin line with corner tick marks */
+    .section-sep {
+      position: relative;
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+      margin: 0 5%;
+    }
+    .section-sep::before, .section-sep::after {
+      content: '';
+      position: absolute; top: -4px;
+      width: 1px; height: 9px;
+      background: rgba(255,255,255,0.18);
+    }
+    .section-sep::before { left: -1px; }
+    .section-sep::after  { right: -1px; }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ════════════════════════════════════
+       BLOCK 1 — HERO
+    ════════════════════════════════════ */
+    .hero {
+      height: 100vh; min-height: 620px;
+      display: flex; align-items: stretch;
+      overflow: hidden;
+      background: var(--dark);
+    }
+    .hero-content {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 4% 0 6%;
+      background: url('heroblock left.png') center center / cover no-repeat;
+    }
+    .hero-img-placeholder {
+      width: 50%;
+      background: url('heroblock.png') center top / cover no-repeat;
+    }
+    /* Diamond decorative element */
+    .hero-diamond {
+      display: flex;
+      margin-bottom: 1.4rem;
+    }
+    .hero-diamond svg {
+      width: 18px; height: 18px;
+      color: var(--accent);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      align-self: flex-start;
+      background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.22);
+      padding: 0.4rem 1rem; border-radius: 100px;
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 2rem;
+    }
+    .hero-badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+    .hero h1 {
+      color: var(--text); margin-bottom: 1.4rem;
+      font-size: clamp(2.2rem, 4vw, 4.5rem);
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: 1rem; color: #7a7a7a;
+      max-width: 420px;
+      margin-bottom: 2.8rem;
+      line-height: 1.75;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: var(--accent);
+      color: #000; font-weight: 700; font-size: 0.9rem;
+      padding: 0.85rem 1.9rem; border-radius: 4px;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover { background: #dbbf80; transform: translateY(-1px); }
+    /* Hero button — outlined style per Figma */
+    .hero .btn-primary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(200,169,110,0.6);
+    }
+    .hero .btn-primary:hover {
+      background: rgba(200,169,110,0.08);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    /* ════════════════════════════════════
+       BLOCK 2 — SERVICES
+    ════════════════════════════════════ */
+    #services { background: #181818; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .service-card {
+      position: relative;
+      background: #272727;
+      padding: 2.5rem 2rem;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.25s;
+      border: 1px solid var(--border);
+    }
+    .service-card:hover { transform: translateY(-4px); }
+    .service-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(200,169,110,0.06) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .service-card:hover { background: #1e1e1e; }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.1);
+      border: 1px solid rgba(200,169,110,0.22);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.8rem;
+      color: var(--accent);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .service-card:hover .service-icon {
+      background: rgba(200,169,110,0.16);
+      border-color: rgba(200,169,110,0.4);
+    }
+    .service-icon svg { width: 36px; height: 36px; }
+    .service-card h3 { color: var(--text); margin-bottom: 0.8rem; font-size: 1.1rem; }
+    .service-card p { font-size: 0.9rem; line-height: 1.65; }
+    .service-arrow { display: none; }
+
+    /* ════════════════════════════════════
+       BLOCK 3 — PROCESS (ZIGZAG TIMELINE)
+    ════════════════════════════════════ */
+    #process { background: #181818; overflow: hidden; }
+    .process-timeline {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .process-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 27px;
+      bottom: 27px;
+      width: 1px;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(200,169,110,0.2) 8%,
+        rgba(200,169,110,0.2) 92%,
+        transparent 100%);
+      z-index: 0;
+    }
+    .process-step {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 1rem 0;
+    }
+    .process-num {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: var(--dark);
+      border: 1px solid rgba(200,169,110,0.28);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.73rem; font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+    }
+    .process-card {
+      background: #272727;
+      border: 1px solid rgba(200,169,110,0.12);
+      border-radius: 20px;
+      padding: 1.8rem 2rem;
+    }
+    .process-card h3 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--text); margin-bottom: 0.55rem;
+      line-height: 1.4;
+    }
+    .process-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin: 0; }
+    .process-step:nth-child(odd) .process-card { text-align: right; }
+    .process-step:nth-child(even) .process-card { text-align: left; }
+
+    /* ════════════════════════════════════
+       BLOCK 4 — LICENSES (PHOTO DOCS)
+    ════════════════════════════════════ */
+    #licenses { background: #181818; }
+    #licenses .doc-photo-grid { grid-template-columns: 200px !important; justify-content: center !important; }
+    /* Document photo grid */
+    .doc-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .doc-photo-card {
+      background: linear-gradient(160deg, #f9f5ec 0%, #efe8d4 60%, #e8ddc4 100%);
+      border-radius: 3px;
+      padding: 1.6rem 1.4rem 1.8rem;
+      color: #1a1208;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 0.72;
+      box-shadow:
+        0 2px 0 rgba(0,0,0,0.15),
+        0 8px 32px rgba(0,0,0,0.45),
+        0 24px 64px rgba(0,0,0,0.3);
+      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s;
+      display: flex; flex-direction: column;
+    }
+    .doc-photo-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow:
+        0 2px 0 rgba(0,0,0,0.15),
+        0 16px 48px rgba(0,0,0,0.55),
+        0 36px 80px rgba(0,0,0,0.35);
+    }
+    /* Paper lines texture */
+    .doc-photo-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px, transparent 22px,
+        rgba(0,0,0,0.04) 22px, rgba(0,0,0,0.04) 23px
+      );
+      pointer-events: none;
+    }
+    /* Top color stripe */
+    .doc-stripe {
+      height: 5px;
+      background: linear-gradient(90deg, #1a3a6b 0%, #1a3a6b 60%, #8b0000 60%, #8b0000 100%);
+      margin: -1.6rem -1.4rem 1.2rem;
+      border-radius: 3px 3px 0 0;
+    }
+    /* State emblem placeholder */
+    .doc-emblem {
+      width: 52px; height: 52px;
+      margin: 0 auto 0.8rem;
+      position: relative;
+    }
+    .doc-emblem svg { width: 100%; height: 100%; }
+    /* Header */
+    .doc-header {
+      text-align: center;
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #1a3a6b;
+      line-height: 1.4;
+      margin-bottom: 0.7rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid rgba(26,58,107,0.25);
+    }
+    /* Document type label (ЛИЦЕНЗИЯ / СЕРТИФИКАТ / ДОПУСК) */
+    .doc-type {
+      font-size: 0.82rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #0d1f3c;
+      text-align: center;
+      margin-bottom: 0.25rem;
+    }
+    /* Document subtitle */
+    .doc-title-text {
+      font-size: 0.55rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(13,31,60,0.65);
+      text-align: center;
+      line-height: 1.45;
+      margin-bottom: 0.8rem;
+    }
+    /* Legacy alias */
+    .doc-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.04em; color: #0d1f3c; text-align: center; line-height: 1.35; margin-bottom: 0.8rem; }
+    /* Blank text lines imitation */
+    .doc-lines { flex: 1; padding: 0.4rem 0; display: flex; flex-direction: column; gap: 0.38rem; }
+    .doc-line {
+      height: 1px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 1px;
+    }
+    .doc-line.short  { width: 60%; }
+    .doc-line.medium { width: 80%; }
+    .doc-line--short { width: 65%; }
+    .doc-line--mid   { width: 85%; }
+    /* Issuer text inside .doc-header */
+    .doc-issuer { font-size: 0.5rem; }
+    /* Serial number */
+    .doc-serial {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #1a3a6b;
+      text-align: center;
+      margin-top: 0.6rem;
+      font-family: monospace;
+    }
+    /* Bottom area: stamp + signature */
+    .doc-bottom, .doc-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+    .doc-sig {
+      display: flex; flex-direction: column; gap: 0.2rem;
+    }
+    .doc-sig-line { width: 52px; height: 1px; background: rgba(0,0,0,0.2); }
+    .doc-sig-label { font-size: 0.45rem; color: rgba(0,0,0,0.4); letter-spacing: 0.04em; }
+    /* Circular stamp */
+    .doc-stamp {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(26,58,107,0.4);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      opacity: 0.55;
+    }
+    .doc-stamp svg { width: 24px; height: 24px; color: #1a3a6b; }
+    /* Hover overlay */
+    .doc-photo-card .doc-hover-label {
+      position: absolute; inset: 0;
+      background: rgba(26,58,107,0.08);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #1a3a6b;
+    }
+    .doc-photo-card:hover .doc-hover-label { opacity: 1; }
+    /* Lightbox */
+    /* ── Photo gallery lightbox ── */
+    .lightbox-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox-overlay.open { opacity: 1; pointer-events: all; }
+    .lightbox-close {
+      position: fixed; top: 1.5rem; right: 1.5rem;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%; width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff; font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.16); }
+    .lightbox-img-wrap {
+      max-width: 90vw; max-height: 88vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-img-wrap img {
+      max-width: 90vw; max-height: 88vh;
+      object-fit: contain; border-radius: 8px;
+      display: block; transition: opacity 0.25s;
+    }
+    .lightbox-arrow {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%; width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff; font-size: 1.2rem;
+      transition: background 0.2s; user-select: none;
+    }
+    .lightbox-arrow:hover { background: rgba(255,255,255,0.18); }
+    .lightbox-arrow.prev { left: 1.5rem; }
+    .lightbox-arrow.next { right: 1.5rem; }
+    .lightbox-dots {
+      position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px;
+    }
+    .lightbox-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.3); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .lightbox-dot.active { background: #fff; transform: scale(1.3); }
+
+    /* ════════════════════════════════════
+       BLOCK 5 — BENEFITS (STICKY SCROLL)
+    ════════════════════════════════════ */
+    #benefits { background: #181818; overflow: clip; padding-top: calc(7rem - 20px); padding-bottom: calc(7rem - 20px); }
+    #benefits .section-label { margin-bottom: 1.5rem; width: fit-content; }
+
+    /* Two-column sticky grid */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 64px;
+      align-items: start;
+    }
+    .benefits-left { display: flex; flex-direction: column; }
+
+    /* Cards stack */
+    .benefits-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 40px;
+    }
+    .benefits-card {
+      background: #272727;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .benefits-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(200,169,110,0.07);
+      border: 1px solid rgba(200,169,110,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+    .benefits-card-icon svg { width: 20px; height: 20px; }
+    .benefits-card h3 { color: var(--text); font-size: 1.05rem; font-weight: 600; margin: 0; }
+    .benefits-card p  { font-size: 0.875rem; line-height: 1.65; color: var(--muted); margin: 0; }
+
+    /* Right: sticky image column */
+    .benefits-sticky {
+      position: sticky;
+      top: 100px;
+      align-self: start;
+    }
+    .benefits-sticky img {
+      width: 100%;
+      border-radius: 20px;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+      object-position: top;
+    }
+
+    /* Spring-like ease override for benefits section */
+    #benefits .reveal {
+      transition-timing-function: cubic-bezier(0.22, 1.0, 0.36, 1);
+      transition-duration: 700ms;
+    }
+
+    /* Sticky image: translate + scale reveal */
+    .reveal-sticky-img {
+      opacity: 0;
+      transform: translateY(60px) scale(0.92);
+      transition: opacity 700ms cubic-bezier(0.22, 1.0, 0.36, 1) 0.8s,
+                  transform 700ms cubic-bezier(0.22, 1.0, 0.36, 1) 0.8s;
+    }
+    .reveal-sticky-img.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* Extra stagger delays for card columns */
+    .reveal-delay-5 { transition-delay: 0.45s; }
+    .reveal-delay-6 { transition-delay: 0.55s; }
+    .reveal-delay-7 { transition-delay: 0.65s; }
+
+    /* ════════════════════════════════════
+       BLOCK 6 — TECH MAP (ISOMETRIC HOTSPOTS)
+    ════════════════════════════════════ */
+    #tech { background: #181818; }
+    .tech-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .tech-text p { font-size: 0.95rem; line-height: 1.75; margin-top: 1.2rem; }
+    .tech-map-wrap {
+      position: relative;
+      min-height: 420px;
+      background: linear-gradient(135deg, #111 0%, #1a1208 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: visible;
+    }
+    /* Isometric building illustration via CSS */
+    .iso-building {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .iso-svg {
+      width: 100%;
+      height: 100%;
+    }
+    /* Device hotspot (новый дизайн) */
+    .device-hotspot {
+      position: absolute;
+      cursor: pointer;
+    }
+    .device-hotspot img { display: block; width: 100%; }
+    .device-hotspot .hotspot-tooltip {
+      bottom: calc(100% + 10px);
+      left: 50%;
+    }
+    .device-hotspot:hover .hotspot-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Золотые точки с пульсацией */
+    .hotspot-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: #c8a96e;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+    .hotspot-dot::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.3);
+      animation: hotspot-ring 2s ease-out infinite;
+    }
+    .hotspot-dot::after {
+      content: '';
+      position: absolute;
+      inset: -11px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.12);
+      animation: hotspot-ring 2s ease-out infinite 0.5s;
+    }
+
+    /* Hotspot */
+    .hotspot {
+      position: absolute;
+      cursor: pointer;
+    }
+    .hotspot-pulse {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .hotspot:hover .hotspot-pulse { transform: scale(1.3); }
+    .hotspot-pulse::before {
+      content: '';
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.25);
+      animation: hotspot-ring 2s ease-out infinite;
+    }
+    .hotspot-pulse::after {
+      content: '';
+      position: absolute; inset: -12px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.1);
+      animation: hotspot-ring 2s ease-out infinite 0.5s;
+    }
+    @keyframes hotspot-ring {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .hotspot-tooltip {
+      position: absolute;
+      bottom: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      border: 1px solid rgba(200,169,110,0.3);
+      border-radius: 8px;
+      padding: 0.8rem 1.1rem;
+      width: 200px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      transform: translateX(-50%) translateY(6px);
+      z-index: 10;
+    }
+    .hotspot:hover .hotspot-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .hotspot-tooltip h4 { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .hotspot-tooltip p { font-size: 0.78rem; color: var(--muted); }
+    .tooltip-arrow {
+      position: absolute; bottom: -7px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid rgba(200,169,110,0.3);
+    }
+    .tooltip-arrow::before {
+      content: '';
+      position: absolute; top: -8px; left: -6px;
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #1a1a1a;
+    }
+
+    /* ════════════════════════════════════
+       BLOCK 7 — FAQ
+    ════════════════════════════════════ */
+    #faq { background: #181818; }
+    .faq-wrap { max-width: 100%; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 3rem; }
+    .faq-item {
+      background: #272727;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .faq-item.open { border-color: rgba(200,169,110,0.25); }
+    .faq-q {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: none; border: none; cursor: pointer;
+      padding: 1.5rem 2rem;
+      text-align: left;
+      color: var(--text);
+      font-size: 1.02rem; font-weight: 600;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--accent); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--accent); }
+    .faq-icon svg { width: 11px; height: 11px; color: var(--muted); transition: color 0.3s; }
+    .faq-item.open .faq-icon svg { color: var(--accent); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-a-inner { padding: 0 2rem 1.5rem; font-size: 0.95rem; color: var(--muted); line-height: 1.75; text-align: left; }
+
+    /* ════════════════════════════════════
+       BLOCK 8 — LEAD FORM
+    ════════════════════════════════════ */
+    #contact {
+      background: #181818;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .contact-left .accent-line {
+      width: 48px; height: 3px;
+      background: var(--accent);
+      margin-bottom: 2rem;
+    }
+    .contact-left h2 { color: var(--text); margin-bottom: 1rem; }
+    .contact-left h2 em { font-style: normal; color: var(--accent); }
+    .contact-left p { font-size: 0.95rem; line-height: 1.75; max-width: 400px; }
+    .trust-items { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .trust-item {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.85rem; color: var(--muted);
+    }
+    .trust-check {
+      width: 18px; height: 18px; flex-shrink: 0;
+      color: var(--accent);
+    }
+    .form-card {
+      background: #272727;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+    }
+    .form-card h3 { color: var(--text); margin-bottom: 0.4rem; font-size: 1.2rem; }
+    .form-card .form-sub { font-size: 0.85rem; margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .form-group input {
+      width: 100%;
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus { border-color: rgba(200,169,110,0.5); }
+    .form-group input::placeholder { color: #555; }
+    .form-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #000; font-weight: 700; font-size: 1rem;
+      padding: 1rem;
+      border: none; border-radius: 6px; cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .form-submit:hover { background: #dbbf80; transform: translateY(-1px); }
+    .form-privacy {
+      font-size: 0.72rem; color: #555;
+      text-align: center; margin-top: 1rem; line-height: 1.5;
+    }
+    .form-privacy a { text-decoration: underline; text-decoration-color: #444; }
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem 0;
+    }
+    .form-success .success-icon {
+      width: 56px; height: 56px;
+      color: var(--accent);
+      margin: 0 auto 1.5rem;
+    }
+    .form-success h3 { color: var(--text); margin-bottom: 0.5rem; }
+    .form-success p { font-size: 0.9rem; }
+
+    /* ════════════════════════════════════
+       BLOCK 9 — FOOTER
+    ════════════════════════════════════ */
+    footer {
+      background: #181818;
+      border-top: 1px solid var(--border);
+      padding: 4rem 5% 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-brand-logo {
+      font-size: 1.4rem; font-weight: 800;
+      letter-spacing: 0.06em; color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .footer-brand-logo span { color: var(--accent); }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a {
+      font-size: 0.88rem; color: #666;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--text); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 2rem;
+      font-size: 0.78rem; color: #444;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom a { color: #555; text-decoration: underline; text-decoration-color: #333; }
+    .footer-bottom a:hover { color: var(--muted); }
+
+    /* ════════════════════════════════════
+       CTA BANNER
+    ════════════════════════════════════ */
+    .cta-banner {
+      position: relative;
+      padding: 9rem 5%;
+      text-align: center;
+      overflow: hidden;
+      background: #181818;
+    }
+    .cta-banner-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 55% 60% at 50% 100%, rgba(200,169,110,0.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-banner-deco {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 520px; height: 520px; opacity: 0.03;
+      color: var(--accent); pointer-events: none;
+    }
+    .cta-banner h2 {
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      color: var(--text); margin-bottom: 1.2rem; position: relative;
+    }
+    .cta-banner h2 em { font-style: normal; color: var(--accent); }
+    .cta-banner p {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 520px; margin: 0 auto 2.5rem; position: relative;
+    }
+    .cta-banner .btn-primary { position: relative; font-size: 1rem; padding: 1rem 2.5rem; }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      width: 480px; max-width: 92vw;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+    .modal-close {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1.3rem;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-box h3 { color: var(--text); font-size: 1.35rem; margin-bottom: 0.4rem; }
+    .modal-box .modal-sub { font-size: 0.88rem; margin-bottom: 2rem; }
+
+    /* ─── RESPONSIVE ─── */
+
+    /* Wide desktop — 1400px+ */
+    @media (min-width: 1400px) {
+      .section { padding: 8rem calc((100vw - 1320px) / 2); }
+      .nav { padding: 1.4rem calc((100vw - 1320px) / 2); }
+      footer { padding: 5rem calc((100vw - 1320px) / 2) 2.5rem; }
+      h1 { font-size: 4.5rem; }
+      h2 { font-size: 3rem; }
+      .hero-sub { font-size: 1.2rem; }
+      .tech-layout { grid-template-columns: 1fr 1.8fr; gap: 7rem; }
+      .doc-photo-grid { max-width: 1320px; gap: 2.5rem; }
+    }
+
+    /* Tight desktop / large tablet */
+    @media (max-width: 1100px) {
+
+      .contact-grid { gap: 4rem; }
+    }
+
+    /* Tablet — collapse heavy 2-column layouts */
+    @media (max-width: 900px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .steps-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+      .step-card:nth-child(3)::after { display: none; }
+      .tech-layout { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .doc-photo-grid { grid-template-columns: repeat(2, 1fr); max-width: 560px; }
+      .benefits-grid { grid-template-columns: 1fr; gap: 40px; }
+      .benefits-sticky { position: relative; top: auto; order: -1; }
+      .benefits-sticky img { aspect-ratio: 16/9; }
+    }
+
+    /* Small tablet / large phone */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav { grid-template-columns: 1fr 1fr; }
+      .nav-cta-wrap { justify-content: flex-end; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+
+      /* Process: num + line LEFT, card RIGHT */
+      .process-step {
+        grid-template-columns: auto 1fr;
+        gap: 1.25rem;
+      }
+      .process-step .process-num {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .process-step .process-card {
+        grid-column: 2;
+        grid-row: 1;
+        text-align: left !important;
+      }
+      .process-step > div:not(.process-card):not(.process-num) {
+        display: none;
+      }
+      .process-timeline::before {
+        left: 27px;
+        transform: none;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .section { padding: 5rem 5%; }
+      .hero { height: calc(100svh - 84px); min-height: 500px; }
+      .hero-img-placeholder { display: none; }
+      .hero-content { width: 100%; padding: 0 6%; align-items: center; text-align: center; justify-content: center; }
+      .hero-sub { margin-bottom: 1.5rem; }
+      .hero-badge { font-size: 0.545rem; white-space: nowrap; align-self: center; }
+      .hero-actions { justify-content: center; }
+      .services-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .step-card::after { display: none; }
+      .doc-photo-grid { grid-template-columns: repeat(2, 1fr); max-width: 360px; gap: 1rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="nav">
+  <div class="nav-logo">KAZ<span>SHELD</span></div>
+  <div class="nav-links">
+    <a href="#services">Услуги</a>
+    <a href="#process">Процесс</a>
+    <a href="#licenses">Лицензии</a>
+    <a href="#tech">Технологии</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-cta-wrap">
+    <a href="#contact" class="nav-cta">Оставить заявку</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════
+     PAGE BLOCKS WRAPPER
+════════════════════════════════════ -->
+<div class="page-blocks">
+
+<!-- ════════════════════════════════════
+     BLOCK 1 — HERO
+════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge reveal reveal-delay-1">
+      <span class="hero-badge-dot"></span>
+      Профессиональная охрана
+    </div>
+    <h1 class="reveal reveal-delay-2">
+      Охрана бизнеса<br/><em>без рисков</em><br/>и простоев
+    </h1>
+    <p class="hero-sub reveal reveal-delay-3">
+      Физическая и техническая охрана для компаний, которым важна безопасность сотрудников, имущества и бизнес-процессов.
+    </p>
+    <div class="hero-actions reveal reveal-delay-4">
+      <button class="btn-primary" onclick="openModal()">
+        Оставить заявку
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="hero-img-placeholder"></div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     BLOCK 2 — SERVICES
+════════════════════════════════════ -->
+<section class="section section-center" id="services">
+  <div class="section-label reveal">Услуги</div>
+  <h2 class="section-title reveal reveal-delay-1"><em>Комплексная защита</em><br/>на каждом уровне</h2>
+  <p class="section-sub reveal reveal-delay-2">Мы не предлагаем универсальных решений — каждая система безопасности строится под конкретный объект, режим работы и уровень угроз.</p>
+  <div class="services-grid">
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 4L6 12v12c0 10 7.5 19 18 22 10.5-3 18-12 18-22V12L24 4z"/>
+          <path d="M18 24l4 4 8-8"/>
+        </svg>
+      </div>
+      <h3>Комплексная защита для коттеджей</h3>
+      <p>Многоуровневая система безопасности для частных домов и территорий — от периметрального контроля до интеграции с пультом охраны.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 14h16M14 6l8 8-8 8"/></svg>
+      </div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="16" width="36" height="26" rx="2"/>
+          <path d="M16 16V12a8 8 0 0116 0v4"/>
+          <circle cx="24" cy="29" r="3"/>
+          <path d="M24 32v4"/>
+        </svg>
+      </div>
+      <h3>Защита бизнеса</h3>
+      <p>Комплексная охрана коммерческих объектов: торговых центров, офисов, производств. Предотвращаем потери и обеспечиваем стабильность рабочих процессов.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 14h16M14 6l8 8-8 8"/></svg>
+      </div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="16" r="8"/>
+          <path d="M8 44c0-8.8 7.2-16 16-16s16 7.2 16 16"/>
+          <path d="M32 26l4 4 8-6"/>
+        </svg>
+      </div>
+      <h3>Физическая охрана</h3>
+      <p>Постоянное присутствие аттестованных сотрудников с чёткими регламентами действий. Контроль доступа, патрулирование, быстрое реагирование на нештатные ситуации.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 14h16M14 6l8 8-8 8"/></svg>
+      </div>
+    </div>
+
+    <div class="service-card reveal reveal-delay-4">
+      <div class="service-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 6l-4 10H8l8 6-3 10 11-7 11 7-3-10 8-6H28L24 6z"/>
+          <circle cx="24" cy="28" r="4"/>
+          <path d="M24 32v8"/>
+        </svg>
+      </div>
+      <h3>Пожарная сигнализация</h3>
+      <p>Системы раннего обнаружения возгораний, интегрированные с общим контуром безопасности. Монтаж, настройка, техническое обслуживание и сервисная поддержка.</p>
+      <div class="service-arrow">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 14h16M14 6l8 8-8 8"/></svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     BLOCK 3 — PROCESS (STEP CARDS)
+════════════════════════════════════ -->
+<section class="section section-center" id="process">
+  <div class="section-label reveal">Процесс</div>
+  <h2 class="section-title reveal reveal-delay-1"><em>Прозрачный процесс</em><br/>от анализа до запуска</h2>
+  <p class="section-sub reveal reveal-delay-2">Охрана начинается не с выставленного поста, а с детального понимания объекта. Каждый этап — конкретный результат.</p>
+
+  <div class="process-timeline">
+
+    <!-- Step 01: card LEFT, num CENTER -->
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-card">
+        <h3>Анализ объекта и рисков</h3>
+        <p>Выезд специалиста, комплексная оценка территории, выявление уязвимых точек. Детальный отчёт по безопасности.</p>
+      </div>
+      <div class="process-num">01</div>
+      <div></div>
+    </div>
+
+    <!-- Step 02: empty LEFT, num CENTER, card RIGHT -->
+    <div class="process-step reveal reveal-delay-2">
+      <div></div>
+      <div class="process-num">02</div>
+      <div class="process-card">
+        <h3>Проектирование системы</h3>
+        <p>Определяем формат охраны, количество постов, техническое оснащение и сценарии реагирования на инциденты.</p>
+      </div>
+    </div>
+
+    <!-- Step 03: card LEFT, num CENTER -->
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-card">
+        <h3>Согласование условий</h3>
+        <p>Фиксируем зоны ответственности, график, регламенты действий. Всё закреплено в договоре — никаких устных договорённостей.</p>
+      </div>
+      <div class="process-num">03</div>
+      <div></div>
+    </div>
+
+    <!-- Step 04: empty LEFT, num CENTER, card RIGHT -->
+    <div class="process-step reveal reveal-delay-2">
+      <div></div>
+      <div class="process-num">04</div>
+      <div class="process-card">
+        <h3>Установка и запуск</h3>
+        <p>Монтируем оборудование, инструктируем персонал, тестируем все сценарии и запускаем объект под охрану.</p>
+      </div>
+    </div>
+
+    <!-- Step 05: card LEFT, num CENTER -->
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-card">
+        <h3>Контроль и обслуживание</h3>
+        <p>Мониторим работу охраны, обслуживаем технику и корректируем систему при изменении задач объекта.</p>
+      </div>
+      <div class="process-num">05</div>
+      <div></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════
+     BLOCK 4 — LICENSES
+════════════════════════════════════ -->
+<section class="section section-center" id="licenses">
+  <div class="section-label reveal">Документы</div>
+  <h2 class="section-title reveal reveal-delay-1">Работаем<br/><em>в рамках закона</em></h2>
+  <p class="section-sub reveal reveal-delay-2">Kazsheld имеет все необходимые лицензии на осуществление охранной деятельности в Казахстане. Нажмите на документ для подробной информации.</p>
+
+  <div class="doc-photo-grid reveal reveal-delay-3">
+
+    <!-- Card 1 -->
+    <div class="doc-photo-card" data-index="0">
+      <div class="doc-stripe"></div>
+      <div class="doc-header">
+        <svg class="doc-emblem" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="#1a3a6b" stroke-width="2"/>
+          <path d="M24 8L28 18H38L30 24L33 34L24 28L15 34L18 24L10 18H20L24 8Z" fill="#1a3a6b" opacity="0.7"/>
+        </svg>
+        <div class="doc-issuer">Министерство внутренних дел<br/>Республики Казахстан</div>
+      </div>
+      <div class="doc-type">ЛИЦЕНЗИЯ</div>
+      <div class="doc-title-text">на осуществление охранной деятельности</div>
+      <div class="doc-lines">
+        <div class="doc-line"></div><div class="doc-line short"></div>
+        <div class="doc-line"></div><div class="doc-line medium"></div>
+        <div class="doc-line short"></div>
+      </div>
+      <div class="doc-serial">№ КЗ-0001-2024</div>
+      <div class="doc-footer">
+        <div class="doc-stamp">
+          <svg viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="22" r="20" stroke="#1a3a6b" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <circle cx="22" cy="22" r="14" stroke="#1a3a6b" stroke-width="1"/>
+            <text x="22" y="26" text-anchor="middle" font-size="6" fill="#1a3a6b" font-weight="bold">KAZSHELD</text>
+          </svg>
+        </div>
+        <div class="doc-sig">
+          <div class="doc-sig-line"></div>
+          <div class="doc-sig-label">Подпись / Қол</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Lightbox for licenses -->
+<div class="lightbox-overlay" id="licLightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-img-wrap">
+    <img id="lbPhoto" src="" alt="Документ">
+  </div>
+  <button class="lightbox-arrow prev" onclick="lightboxNav(-1)">&#8592;</button>
+  <button class="lightbox-arrow next" onclick="lightboxNav(1)">&#8594;</button>
+  <div class="lightbox-dots" id="lbDots"></div>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 5 — BENEFITS
+════════════════════════════════════ -->
+
+
+<section class="section" id="benefits">
+  <div class="benefits-grid">
+
+    <!-- Left: scrolling content -->
+    <div class="benefits-left">
+      <div class="section-label reveal reveal-delay-1">Преимущества</div>
+      <h2 class="section-title reveal reveal-delay-2"><em>Что вы получаете</em><br/>с нашей охраной</h2>
+      <p class="section-sub reveal reveal-delay-3">Мы строим системы безопасности, которые работают даже когда вас нет рядом.</p>
+
+      <div class="benefits-cards">
+
+        <div class="benefits-card reveal reveal-delay-3">
+          <div class="benefits-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <h3>Охрана, адаптированная под ваш объект</h3>
+          <p>Не типовой договор «из коробки», а индивидуальная система, выстроенная под тип объекта, режим работы и реальные угрозы.</p>
+        </div>
+
+        <div class="benefits-card reveal reveal-delay-4">
+          <div class="benefits-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/>
+              <path d="M8 21h8M12 17v4"/>
+              <circle cx="12" cy="10" r="2"/>
+              <path d="M6 10h2M16 10h2"/>
+            </svg>
+          </div>
+          <h3>Физическая охрана и технологии в одном контуре</h3>
+          <p>Люди и техника работают как единая система. Датчики, камеры и СКУД усиливают эффективность сотрудников охраны.</p>
+        </div>
+
+        <div class="benefits-card reveal reveal-delay-5">
+          <div class="benefits-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Обученный персонал с чёткими регламентами</h3>
+          <p>Каждый сотрудник знает, что делать в любой нештатной ситуации. Регламенты разрабатываются под объект и регулярно отрабатываются.</p>
+        </div>
+
+        <div class="benefits-card reveal reveal-delay-6">
+          <div class="benefits-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <h3>Управляемость и контроль качества</h3>
+          <p>Вы всегда знаете, что происходит на объекте. Отчёты, журналы, доступ к системам мониторинга — прозрачность на каждом этапе.</p>
+        </div>
+
+        <div class="benefits-card reveal reveal-delay-7">
+          <div class="benefits-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </div>
+          <h3>Прозрачные условия — прогнозируемый результат</h3>
+          <p>Фиксированная стоимость, понятный договор, измеримые KPI. Никаких скрытых платежей и размытых зон ответственности.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right: sticky image -->
+    <div class="benefits-sticky reveal-sticky-img">
+      <img src="image_12.png" alt="Охрана объекта"/>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     BLOCK 6 — TECH MAP
+════════════════════════════════════ -->
+
+
+<section class="section section-center" id="tech">
+  <div class="section-label reveal">Технологии</div>
+  <h2 class="section-title reveal reveal-delay-1">Установка и обслуживание<br/><em>систем безопасности</em></h2>
+  <div class="reveal reveal-delay-2" style="text-align:center; max-width:640px; margin:1.5rem auto 0;">
+    <p>Мы устанавливаем защитную технику под ключ и обеспечиваем её регулярное обслуживание, настройку и контроль работоспособности.</p>
+    <br/>
+    <p>Системы безопасности стабильно работают без сбоев и участия со стороны заказчика — вы занимаетесь бизнесом, мы занимаемся безопасностью.</p>
+  </div>
+
+  <div style="margin-top:24px; margin-bottom:24px; text-align:center;">
+    <div class="reveal reveal-delay-2" style="display:inline-block; width:min(100%, 1024px); background:#1f1f1f; border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:50px; overflow:visible;">
+      <div style="position:relative; width:100%; aspect-ratio:924/616; overflow:visible;">
+
+        <!-- SVG dashed connection lines (curved) -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1;" viewBox="0 0 924 616" preserveAspectRatio="xMidYMid meet">
+          <path d="M 275,70 Q 337,150 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
+          <path d="M 648,70 Q 586,150 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
+          <path d="M 111,308 Q 286,268 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
+          <path d="M 806,308 Q 634,268 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
+          <path d="M 292,518 Q 346,452 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
+          <path d="M 663,518 Q 596,449 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
+        </svg>
+
+        <!-- Office image (centered) -->
+        <img src="office-new.png" alt="Офис безопасности" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62.9%;pointer-events:none;z-index:2;">
+
+        <!-- Golden dots with pulse -->
+        <div class="hotspot-dot" style="left:29.8%;top:11.3%;width:1.73%;aspect-ratio:1;"></div>
+        <div class="hotspot-dot" style="left:70.1%;top:11.3%;width:1.73%;aspect-ratio:1;"></div>
+        <div class="hotspot-dot" style="left:12.0%;top:50.0%;width:1.73%;aspect-ratio:1;"></div>
+        <div class="hotspot-dot" style="left:87.2%;top:50.0%;width:1.73%;aspect-ratio:1;"></div>
+        <div class="hotspot-dot" style="left:31.6%;top:84.1%;width:1.73%;aspect-ratio:1;"></div>
+        <div class="hotspot-dot" style="left:71.8%;top:84.1%;width:1.73%;aspect-ratio:1;"></div>
+
+        <!-- Hub / Пожарная сигнализация (top-left) -->
+        <div class="device-hotspot" style="left:17.2%;top:0%;width:10.5%;z-index:4;">
+          <img src="device-hub.png" alt="Хаб">
+          <div class="hotspot-tooltip"><h4>Пожарная сигнализация</h4><p>Адресные дымовые и тепловые датчики с автоматическим оповещением</p><div class="tooltip-arrow"></div></div>
+        </div>
+
+        <!-- Camera / IP-камеры 360° (top-right) -->
+        <div class="device-hotspot" style="left:71.8%;top:-1.7%;width:12.6%;z-index:4;">
+          <img src="device-camera.png" alt="Камера">
+          <div class="hotspot-tooltip"><h4>IP-камеры 360°</h4><p>Панорамное видеонаблюдение с ночным режимом, запись 24/7 на облако</p><div class="tooltip-arrow"></div></div>
+        </div>
+
+        <!-- Remote / Охранная сигнализация (left) -->
+        <div class="device-hotspot" style="left:-0.76%;top:39.2%;width:14.3%;z-index:4;">
+          <img src="device-remote.png" alt="Пульт">
+          <div class="hotspot-tooltip"><h4>Охранная сигнализация</h4><p>Датчики вибрации и разбития стекла, интегрированные с пультом охраны</p><div class="tooltip-arrow"></div></div>
+        </div>
+
+        <!-- Motion / Датчики движения (right) -->
+        <div class="device-hotspot" style="left:85.8%;top:39.2%;width:14.3%;z-index:4;">
+          <img src="device-motion.png" alt="Датчик движения">
+          <div class="hotspot-tooltip"><h4>Датчики движения</h4><p>Инфракрасные периметральные датчики с зоной охвата 12 м</p><div class="tooltip-arrow"></div></div>
+        </div>
+
+        <!-- Keypad / СКУД на входе (bottom-left) -->
+        <div class="device-hotspot" style="left:17.8%;top:72.6%;width:15.5%;z-index:4;">
+          <img src="device-keypad.png" alt="Клавиатура">
+          <div class="hotspot-tooltip"><h4>СКУД на входе</h4><p>Биометрический считыватель и электромагнитный замок с журналом доступа</p><div class="tooltip-arrow"></div></div>
+        </div>
+
+        <!-- Siren / Проводная сирена (bottom-right) -->
+        <div class="device-hotspot" style="left:72.8%;top:72.6%;width:15.4%;z-index:4;">
+          <img src="device-siren.png" alt="Сирена">
+          <div class="hotspot-tooltip"><h4>Проводная сирена</h4><p>Проводная сирена с креплением для брендированной лицевой панели. Для использования на улице и в помещении.</p><div class="tooltip-arrow"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <ul style="list-style:none; margin-top:2rem; display:inline-flex; flex-direction:column; gap:0.8rem; align-items:flex-start;" class="reveal reveal-delay-3">
+    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+      IP-видеонаблюдение с записью 24/7
+    </li>
+    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+      Системы контроля и управления доступом (СКУД)
+    </li>
+    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+      Охранная и пожарная сигнализация
+    </li>
+    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+      Периметральные датчики движения
+    </li>
+    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+      Интеграция всех систем в единый пульт управления
+    </li>
+  </ul>
+</section>
+
+<!-- ════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════ -->
+
+
+<section class="cta-banner">
+  <div class="cta-banner-glow"></div>
+  <!-- Decorative shield SVG -->
+  <svg class="cta-banner-deco" viewBox="0 0 200 240" fill="currentColor">
+    <path d="M100 10L20 40v70c0 52 34 98 80 120 46-22 80-68 80-120V40L100 10z"/>
+  </svg>
+  <div class="section-label reveal" style="position:relative;">Охрана</div>
+  <h2 class="reveal reveal-delay-1" style="position:relative;">Готовы <em>защитить</em><br/>свой бизнес?</h2>
+  <p class="reveal reveal-delay-2">Оставьте заявку — специалист свяжется в течение 30 минут и предложит решение под ваш объект.</p>
+  <button class="btn-primary reveal reveal-delay-3" onclick="openModal()">
+    Оставить заявку
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</section>
+
+
+<!-- ════════════════════════════════════
+     BLOCK 7 — FAQ
+════════════════════════════════════ -->
+<section class="section section-center" id="faq">
+  <div class="section-label reveal">FAQ</div>
+  <h2 class="section-title reveal reveal-delay-1"><em>Часто задаваемые</em><br/>вопросы</h2>
+  <div class="faq-wrap">
+
+    <div class="faq-item reveal">
+      <button class="faq-q">
+        Сколько времени занимает запуск охраны с нуля?
+        <span class="faq-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v8M1 5h8"/></svg>
+        </span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Стандартный срок — от 5 до 14 рабочих дней с момента подписания договора. Включает анализ объекта, монтаж оборудования, инструктаж персонала и тестирование всех систем. В ряде случаев физическую охрану можно запустить уже на следующий день, пока монтируются технические системы.</div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q">
+        Можно ли совмещать физическую охрану с уже установленным оборудованием?
+        <span class="faq-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v8M1 5h8"/></svg>
+        </span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Да. Мы проводим аудит существующих систем и при необходимости интегрируем их в общий контур безопасности. Если оборудование устарело или несовместимо — предложим замену или дополнение. Вы не обязаны демонтировать то, что уже работает.</div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q">
+        Что происходит при срабатывании сигнализации ночью?
+        <span class="faq-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v8M1 5h8"/></svg>
+        </span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Дежурный оператор пульта охраны немедленно верифицирует сигнал по камерам, оценивает угрозу и направляет группу быстрого реагирования. Среднее время прибытия — до 7 минут. Одновременно уведомляем ответственное лицо со стороны заказчика и при необходимости вызываем полицию.</div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q">
+        Как контролируется работа охранников на объекте?
+        <span class="faq-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v8M1 5h8"/></svg>
+        </span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Сотрудники работают по регламентированным маршрутам с контрольными точками — каждая отметка фиксируется в системе. Руководитель объекта видит статус сотрудников в реальном времени. Мы проводим плановые и внеплановые проверки, ведём журнал смен и предоставляем ежемесячные отчёты.</div></div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q">
+        Есть ли минимальный срок договора?
+        <span class="faq-icon">
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1v8M1 5h8"/></svg>
+        </span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Базовый договор заключается на 12 месяцев — это стандарт рынка, позволяющий выстроить систему и подтвердить её эффективность. Для отдельных услуг (разовая охрана мероприятий, временная охрана объекта) возможны краткосрочные форматы. Подробности обсуждаются на консультации.</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     BLOCK 8 — LEAD FORM
+════════════════════════════════════ -->
+
+
+<section class="section" id="contact">
+  <div class="contact-grid">
+    <div class="contact-left">
+      <div class="accent-line reveal"></div>
+      <h2 class="reveal reveal-delay-1">Запишитесь на<br/><em>бесплатную консультацию</em></h2>
+      <p class="reveal reveal-delay-2">Специалист Kazsheld свяжется с вами в течение 30 минут в рабочее время, выслушает задачу и предложит оптимальное решение без обязательств.</p>
+      <div class="trust-items reveal reveal-delay-3">
+        <div class="trust-item">
+          <svg class="trust-check" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+          Бесплатный выезд специалиста на объект
+        </div>
+        <div class="trust-item">
+          <svg class="trust-check" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+          Коммерческое предложение за 24 часа
+        </div>
+        <div class="trust-item">
+          <svg class="trust-check" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+          Никакого давления и навязанных услуг
+        </div>
+        <div class="trust-item">
+          <svg class="trust-check" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+          Конфиденциальность ваших данных
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="form-card">
+        <h3>Оставьте заявку</h3>
+        <p class="form-sub">Ответим в течение 30 минут</p>
+        <form id="leadForm" onsubmit="submitForm(event)">
+          <div class="form-group">
+            <label>Ваше имя</label>
+            <input type="text" placeholder="Иван Иванов" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="emailInput" placeholder="example@mail.com" required />
+          </div>
+          <button type="submit" class="form-submit">Получить консультацию</button>
+          <p class="form-privacy">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой обработки персональных данных</a> и даёте согласие на получение информации об услугах Kazsheld.</p>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <svg class="success-icon" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="28" cy="28" r="24"/>
+            <path d="M18 28l7 7 13-13" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Заявка принята!</h3>
+          <p>Наш специалист свяжется с вами в течение 30 минут. Спасибо за обращение.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     BLOCK 9 — FOOTER
+════════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">KAZ<span>SHELD</span></div>
+      <p>Профессиональная охрана бизнеса и объектов. Лицензированная охранная компания.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Услуги</h4>
+      <ul>
+        <li><a href="#services">Охрана коттеджей</a></li>
+        <li><a href="#services">Охрана бизнеса</a></li>
+        <li><a href="#services">Физическая охрана</a></li>
+        <li><a href="#services">Пожарная сигнализация</a></li>
+        <li><a href="#tech">Технические системы</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Компания</h4>
+      <ul>
+        <li><a href="#process">Как мы работаем</a></li>
+        <li><a href="#licenses">Лицензии</a></li>
+        <li><a href="#benefits">Преимущества</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#">Политика конфиденциальности</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <ul>
+        <li><a href="https://wa.me/77022777107" target="_blank" rel="noopener">+7 702 277 7107</a></li>
+        <li><a href="mailto:B@it-buh.kz">B@it-buh.kz</a></li>
+        <li><a href="https://www.google.com/maps/place/3A+Safety+Group,+Almaty/@43.2081814,76.9006016,17z/data=!3m1!4b1!4m6!3m5!1s0x3883693a2e77f905:0x14ecfddf43169477!8m2!3d43.2081814!4d76.9031765!16s%2Fg%2F11s34ypk37?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">г. Алматы, Алмагуль 3а</a></li>
+        <li><a href="#contact">Оставить заявку</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Kazsheld. Все права защищены.</span>
+    <span>ИИН / БИН: 123456789012 | Лицензия МВД РК</span>
+    <a href="#">Политика конфиденциальности</a>
+  </div>
+</footer>
+
+</div><!-- /.page-blocks -->
+
+<!-- ─── MODAL ─── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Оставить заявку</h3>
+    <p class="modal-sub">Специалист свяжется с вами в течение 30 минут</p>
+    <form onsubmit="submitModal(event)">
+      <div class="form-group">
+        <label>Ваше имя</label>
+        <input type="text" placeholder="Иван Иванов" required />
+      </div>
+      <div class="form-group">
+        <label>Номер телефона</label>
+        <input type="tel" placeholder="+7 (___) ___-__-__" required />
+      </div>
+      <button type="submit" class="form-submit">Отправить заявку</button>
+      <p class="form-privacy">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой обработки персональных данных</a>.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     JAVASCRIPT
+═══════════════════════════ -->
+<script>
+  // ─── Sticky nav on scroll ───
+  const nav = document.querySelector('.nav');
+  const onNavScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  };
+  window.addEventListener('scroll', onNavScroll, { passive: true });
+  onNavScroll();
+
+  // ─── Intersection Observer for reveal animations ───
+  const reveals = document.querySelectorAll('.reveal, .reveal-sticky-img');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ─── FAQ Accordion ───
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ─── Licenses photo gallery ───
+  const galleryPhotos = ['scroll-1.png', 'scroll-2.png', 'scroll-3.png'];
+  let currentLic = 0;
+
+  function buildDots() {
+    const container = document.getElementById('lbDots');
+    container.innerHTML = '';
+    galleryPhotos.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'lightbox-dot' + (i === currentLic ? ' active' : '');
+      dot.onclick = () => { currentLic = i; updateLightbox(); };
+      container.appendChild(dot);
+    });
+  }
+  function updateLightbox() {
+    const img = document.getElementById('lbPhoto');
+    img.style.opacity = '0';
+    setTimeout(() => {
+      img.src = galleryPhotos[currentLic];
+      img.style.opacity = '1';
+    }, 150);
+    buildDots();
+  }
+  function openLightbox(index) {
+    currentLic = index;
+    updateLightbox();
+    document.getElementById('licLightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('licLightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function lightboxNav(dir) {
+    currentLic = (currentLic + dir + galleryPhotos.length) % galleryPhotos.length;
+    updateLightbox();
+  }
+  document.querySelectorAll('.doc-photo-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => openLightbox(0));
+  });
+  document.getElementById('licLightbox').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeLightbox();
+  });
+
+  // ─── Modal ───
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  function submitModal(e) {
+    e.preventDefault();
+    closeModal();
+    alert('Заявка отправлена! Мы свяжемся с вами в течение 30 минут.');
+  }
+
+  // ─── Lead Form ───
+  function submitForm(e) {
+    e.preventDefault();
+    const form = document.getElementById('leadForm');
+    const name = form.querySelector('input[type="text"]').value;
+    const email = document.getElementById('emailInput').value;
+    fetch('https://formsubmit.co/ajax/B@it-buh.kz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, email, _subject: 'Новая заявка с сайта Kazsheld' })
+    }).finally(() => {
+      form.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    });
+  }
+
+  // ─── Escape key for modals ───
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+      closeLightbox();
+    }
+  });
+</script>
+</body>
+</html>
