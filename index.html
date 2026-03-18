@@ -34,7 +34,7 @@
 
     /* ─── TYPOGRAPHY SCALE ─── */
     h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
-    h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    h2 { font-size: clamp(2.2rem, 3.5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
     h3 { font-size: clamp(1rem, 2vw, 1.3rem); font-weight: 600; }
     p  { font-size: 1rem; color: #a0a0a0; }
 
@@ -286,8 +286,27 @@
        BLOCK 3 — PROCESS (ZIGZAG TIMELINE)
     ════════════════════════════════════ */
     #process { background: #181818; overflow: hidden; }
+    #process .section-label {
+      margin-bottom: 1.45rem;
+      padding: 0.45rem 1rem;
+      font-size: 0.8rem;
+    }
+    #process .section-title {
+      margin-bottom: 1rem;
+      line-height: 1.12;
+    }
+    #process .section-title em {
+      display: inline;
+      font-style: normal;
+    }
+    #process .section-sub {
+      max-width: 640px;
+      margin-bottom: 4rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
     .process-timeline {
-      margin-top: 4rem;
+      margin-top: 0;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -300,31 +319,28 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      top: 27px;
-      bottom: 27px;
-      width: 1px;
-      background: linear-gradient(180deg,
-        transparent 0%,
-        rgba(200,169,110,0.2) 8%,
-        rgba(200,169,110,0.2) 92%,
-        transparent 100%);
+      top: 36px;
+      bottom: 36px;
+      width: 3px;
+      background: rgba(200,169,110,0.28);
       z-index: 0;
     }
     .process-step {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 2.5rem;
-      padding: 1rem 0;
+      gap: 3.8125rem;
+      min-height: 185px;
+      padding: 0;
     }
     .process-num {
-      width: 54px; height: 54px;
+      width: 72px; height: 72px;
       border-radius: 50%;
       background: var(--dark);
-      border: 1px solid rgba(200,169,110,0.28);
+      border: 3px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.73rem; font-weight: 800;
-      letter-spacing: 0.12em;
+      font-size: 1.5rem; font-weight: 800;
+      letter-spacing: 0.06em;
       color: var(--accent);
       position: relative; z-index: 1;
       flex-shrink: 0;
@@ -333,22 +349,66 @@
       background: #272727;
       border: 1px solid rgba(200,169,110,0.12);
       border-radius: 20px;
-      padding: 1.8rem 2rem;
+      width: 100%;
+      min-height: 153px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
     .process-card h3 {
-      font-size: 1rem; font-weight: 700;
-      color: var(--text); margin-bottom: 0.55rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
       line-height: 1.4;
     }
-    .process-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin: 0; }
+    .process-card p {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
     .process-step:nth-child(odd) .process-card { text-align: right; }
     .process-step:nth-child(even) .process-card { text-align: left; }
 
     /* ════════════════════════════════════
        BLOCK 4 — LICENSES (PHOTO DOCS)
     ════════════════════════════════════ */
-    #licenses { background: #181818; }
-    #licenses .doc-photo-grid { grid-template-columns: 200px !important; justify-content: center !important; }
+    #licenses {
+      background: #181818;
+      text-align: left;
+      padding-top: 64px !important;
+      padding-bottom: 64px !important;
+    }
+    .licenses-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 434px;
+      gap: 3.5rem;
+      align-items: center;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .licenses-copy {
+      max-width: 560px;
+    }
+    .licenses-copy .section-label,
+    .licenses-copy .section-title,
+    .licenses-copy .section-sub {
+      text-align: left;
+    }
+    .licenses-copy .section-sub {
+      max-width: none;
+      margin-bottom: 0;
+    }
+    #licenses .doc-photo-grid {
+      display: flex;
+      justify-content: flex-end !important;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+      justify-self: end;
+    }
     /* Document photo grid */
     .doc-photo-grid {
       display: grid;
@@ -358,147 +418,47 @@
       margin: 0 auto;
     }
     .doc-photo-card {
-      background: linear-gradient(160deg, #f9f5ec 0%, #efe8d4 60%, #e8ddc4 100%);
-      border-radius: 3px;
-      padding: 1.6rem 1.4rem 1.8rem;
-      color: #1a1208;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      aspect-ratio: 0.72;
-      box-shadow:
-        0 2px 0 rgba(0,0,0,0.15),
-        0 8px 32px rgba(0,0,0,0.45),
-        0 24px 64px rgba(0,0,0,0.3);
-      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s;
-      display: flex; flex-direction: column;
+      width: 434px;
+      height: 359px;
+      max-width: 100%;
+      box-shadow: none;
+      transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), filter 0.35s cubic-bezier(0.23,1,0.32,1);
+      display: block;
     }
     .doc-photo-card:hover {
-      transform: translateY(-12px) scale(1.02);
-      box-shadow:
-        0 2px 0 rgba(0,0,0,0.15),
-        0 16px 48px rgba(0,0,0,0.55),
-        0 36px 80px rgba(0,0,0,0.35);
+      transform: translateY(-10px) scale(1.02);
     }
     /* Paper lines texture */
     .doc-photo-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent 0px, transparent 22px,
-        rgba(0,0,0,0.04) 22px, rgba(0,0,0,0.04) 23px
-      );
+      content: none;
+    }
+    .doc-photo-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 24px 30px rgba(0,0,0,0.28));
       pointer-events: none;
     }
-    /* Top color stripe */
-    .doc-stripe {
-      height: 5px;
-      background: linear-gradient(90deg, #1a3a6b 0%, #1a3a6b 60%, #8b0000 60%, #8b0000 100%);
-      margin: -1.6rem -1.4rem 1.2rem;
-      border-radius: 3px 3px 0 0;
+    .doc-photo-card:hover img {
+      filter: drop-shadow(0 32px 36px rgba(0,0,0,0.34));
     }
-    /* State emblem placeholder */
-    .doc-emblem {
-      width: 52px; height: 52px;
-      margin: 0 auto 0.8rem;
-      position: relative;
-    }
-    .doc-emblem svg { width: 100%; height: 100%; }
-    /* Header */
-    .doc-header {
-      text-align: center;
-      font-size: 0.52rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #1a3a6b;
-      line-height: 1.4;
-      margin-bottom: 0.7rem;
-      padding-bottom: 0.7rem;
-      border-bottom: 1px solid rgba(26,58,107,0.25);
-    }
-    /* Document type label (ЛИЦЕНЗИЯ / СЕРТИФИКАТ / ДОПУСК) */
-    .doc-type {
-      font-size: 0.82rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #0d1f3c;
-      text-align: center;
-      margin-bottom: 0.25rem;
-    }
-    /* Document subtitle */
-    .doc-title-text {
-      font-size: 0.55rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: rgba(13,31,60,0.65);
-      text-align: center;
-      line-height: 1.45;
-      margin-bottom: 0.8rem;
-    }
-    /* Legacy alias */
-    .doc-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.04em; color: #0d1f3c; text-align: center; line-height: 1.35; margin-bottom: 0.8rem; }
-    /* Blank text lines imitation */
-    .doc-lines { flex: 1; padding: 0.4rem 0; display: flex; flex-direction: column; gap: 0.38rem; }
-    .doc-line {
-      height: 1px;
-      background: rgba(0,0,0,0.15);
-      border-radius: 1px;
-    }
-    .doc-line.short  { width: 60%; }
-    .doc-line.medium { width: 80%; }
-    .doc-line--short { width: 65%; }
-    .doc-line--mid   { width: 85%; }
-    /* Issuer text inside .doc-header */
-    .doc-issuer { font-size: 0.5rem; }
-    /* Serial number */
-    .doc-serial {
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: #1a3a6b;
-      text-align: center;
-      margin-top: 0.6rem;
-      font-family: monospace;
-    }
-    /* Bottom area: stamp + signature */
-    .doc-bottom, .doc-footer {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-top: 0.8rem;
-      padding-top: 0.6rem;
-      border-top: 1px solid rgba(0,0,0,0.1);
-    }
-    .doc-sig {
-      display: flex; flex-direction: column; gap: 0.2rem;
-    }
-    .doc-sig-line { width: 52px; height: 1px; background: rgba(0,0,0,0.2); }
-    .doc-sig-label { font-size: 0.45rem; color: rgba(0,0,0,0.4); letter-spacing: 0.04em; }
-    /* Circular stamp */
-    .doc-stamp {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 2px solid rgba(26,58,107,0.4);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-      opacity: 0.55;
-    }
-    .doc-stamp svg { width: 24px; height: 24px; color: #1a3a6b; }
-    /* Hover overlay */
     .doc-photo-card .doc-hover-label {
       position: absolute; inset: 0;
-      background: rgba(26,58,107,0.08);
+      background: transparent;
       display: flex; align-items: center; justify-content: center;
       opacity: 0;
       transition: opacity 0.3s;
       font-size: 0.72rem; font-weight: 700;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: #1a3a6b;
+      color: #ffffff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.55);
     }
     .doc-photo-card:hover .doc-hover-label { opacity: 1; }
     /* Lightbox */
@@ -557,6 +517,7 @@
     ════════════════════════════════════ */
     #benefits { background: #181818; overflow: clip; padding-top: calc(7rem - 20px); padding-bottom: calc(7rem - 20px); }
     #benefits .section-label { margin-bottom: 1.5rem; width: fit-content; }
+    #benefits .section-sub { margin-bottom: 32px; }
 
     /* Two-column sticky grid */
     .benefits-grid {
@@ -637,40 +598,99 @@
        BLOCK 6 — TECH MAP (ISOMETRIC HOTSPOTS)
     ════════════════════════════════════ */
     #tech { background: #181818; }
+    #tech .section-label {
+      margin-bottom: 2.25rem;
+    }
+    #tech .section-title {
+      margin-bottom: 3.5rem;
+      line-height: 1.1;
+    }
+    #tech .section-title em {
+      display: block;
+      font-style: normal;
+    }
     .tech-layout {
       display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: 5rem;
-      align-items: center;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 3.5rem;
+      align-items: start;
+      text-align: left;
+      max-width: 1210px;
+      margin: 0 auto;
     }
-    .tech-text p { font-size: 0.95rem; line-height: 1.75; margin-top: 1.2rem; }
-    .tech-map-wrap {
-      position: relative;
-      min-height: 420px;
-      background: linear-gradient(135deg, #111 0%, #1a1208 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: visible;
+    .tech-text {
+      padding-top: 1.25rem;
+      max-width: 540px;
     }
-    /* Isometric building illustration via CSS */
-    .iso-building {
-      position: relative;
+    .tech-text p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin: 0 0 1rem;
+    }
+    .tech-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
       width: 100%;
-      height: 420px;
+      margin: 0;
+      padding: 0;
+    }
+    .tech-features li {
+      min-height: 42px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 0.9rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
-    .iso-svg {
+    .tech-features svg {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent);
+    }
+    .tech-map-wrap {
+      position: relative;
+      max-width: 1024px;
+      margin: 3.5rem auto 0;
+      background: #1f1f1f;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 50px;
+      overflow: visible;
+    }
+    .tech-map-stage {
+      position: relative;
       width: 100%;
-      height: 100%;
+      aspect-ratio: 924 / 616;
+      overflow: visible;
     }
-    /* Device hotspot (новый дизайн) */
+    .tech-office {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 62.9%;
+      z-index: 2;
+      pointer-events: none;
+      filter: none;
+    }
     .device-hotspot {
       position: absolute;
       cursor: pointer;
+      z-index: 4;
     }
-    .device-hotspot img { display: block; width: 100%; }
+    .device-hotspot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
     .device-hotspot .hotspot-tooltip {
       bottom: calc(100% + 10px);
       left: 50%;
@@ -679,10 +699,10 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-
-    /* Золотые точки с пульсацией */
     .hotspot-dot {
       position: absolute;
+      width: 1.73%;
+      aspect-ratio: 1;
       border-radius: 50%;
       background: #c8a96e;
       transform: translate(-50%, -50%);
@@ -703,6 +723,14 @@
       border-radius: 50%;
       background: rgba(200,169,110,0.12);
       animation: hotspot-ring 2s ease-out infinite 0.5s;
+    }
+    .tech-line {
+      position: absolute;
+      height: 2px;
+      border-top: 1.5px dashed #c8a96e;
+      transform-origin: left center;
+      z-index: 1;
+      opacity: 0.9;
     }
 
     /* Hotspot */
@@ -827,69 +855,120 @@
     }
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 50px;
       align-items: center;
     }
-    .contact-left .accent-line {
-      width: 48px; height: 3px;
-      background: var(--accent);
-      margin-bottom: 2rem;
+    .contact-left {
+      width: 100%;
+      max-width: none;
     }
-    .contact-left h2 { color: var(--text); margin-bottom: 1rem; }
-    .contact-left h2 em { font-style: normal; color: var(--accent); }
-    .contact-left p { font-size: 0.95rem; line-height: 1.75; max-width: 400px; }
-    .trust-items { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-left h2 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .contact-left h2 em {
+      display: block;
+      font-style: normal;
+      color: var(--accent);
+    }
+    .contact-left p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      max-width: 418px;
+    }
+    .trust-items {
+      margin-top: 1.3125rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
     .trust-item {
-      display: flex; align-items: center; gap: 0.8rem;
-      font-size: 0.85rem; color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 37px;
+      padding: 0.5rem 0.75rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--muted);
     }
     .trust-check {
-      width: 18px; height: 18px; flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
       color: var(--accent);
+    }
+    .contact-form-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
     }
     .form-card {
       background: #272727;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 2.5rem 2rem;
+      padding: 2.625rem;
+      width: 100%;
     }
-    .form-card h3 { color: var(--text); margin-bottom: 0.4rem; font-size: 1.2rem; }
-    .form-card .form-sub { font-size: 0.85rem; margin-bottom: 2rem; }
-    .form-group { margin-bottom: 1.2rem; }
+    .form-card h3 {
+      color: var(--text);
+      margin-bottom: 0.35rem;
+      font-size: 1.5rem;
+      line-height: 1.28;
+    }
+    .form-card .form-sub {
+      font-size: 0.85rem;
+      line-height: 1.36;
+      margin-bottom: 2rem;
+    }
+    .form-group { margin-bottom: 1.3125rem; }
     .form-group label {
       display: block;
-      font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
     }
     .form-group input {
       width: 100%;
       background: var(--dark2);
       border: 1px solid var(--border);
       border-radius: 6px;
+      height: 47px;
       padding: 0.85rem 1rem;
       color: var(--text);
       font-size: 0.95rem;
+      line-height: 1;
       transition: border-color 0.2s;
       outline: none;
     }
     .form-group input:focus { border-color: rgba(200,169,110,0.5); }
-    .form-group input::placeholder { color: #555; }
+    .form-group input::placeholder { color: var(--text); opacity: 1; }
     .form-submit {
       width: 100%;
       background: var(--accent);
-      color: #000; font-weight: 700; font-size: 1rem;
-      padding: 1rem;
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      height: 50px;
+      padding: 0.95rem 1rem;
       border: none; border-radius: 6px; cursor: pointer;
-      margin-top: 0.5rem;
+      margin-top: 0.125rem;
       transition: background 0.2s, transform 0.15s;
       letter-spacing: 0.01em;
     }
     .form-submit:hover { background: #dbbf80; transform: translateY(-1px); }
     .form-privacy {
-      font-size: 0.72rem; color: #555;
-      text-align: center; margin-top: 1rem; line-height: 1.5;
+      font-size: 0.75rem;
+      color: #555;
+      text-align: center;
+      margin-top: 0.875rem;
+      line-height: 1.44;
     }
     .form-privacy a { text-decoration: underline; text-decoration-color: #444; }
     /* Success state */
@@ -970,7 +1049,6 @@
       color: var(--accent); pointer-events: none;
     }
     .cta-banner h2 {
-      font-size: clamp(2.2rem, 4vw, 3.8rem);
       color: var(--text); margin-bottom: 1.2rem; position: relative;
     }
     .cta-banner h2 em { font-style: normal; color: var(--accent); }
@@ -1015,19 +1093,32 @@
     /* Wide desktop — 1400px+ */
     @media (min-width: 1400px) {
       .section { padding: 8rem calc((100vw - 1320px) / 2); }
-      .nav { padding: 1.4rem calc((100vw - 1320px) / 2); }
+      .nav { padding: 0 calc((100vw - 1320px) / 2); }
       footer { padding: 5rem calc((100vw - 1320px) / 2) 2.5rem; }
       h1 { font-size: 4.5rem; }
       h2 { font-size: 3rem; }
       .hero-sub { font-size: 1.2rem; }
-      .tech-layout { grid-template-columns: 1fr 1.8fr; gap: 7rem; }
+      .tech-layout { gap: 2.75rem; }
       .doc-photo-grid { max-width: 1320px; gap: 2.5rem; }
     }
 
     /* Tight desktop / large tablet */
     @media (max-width: 1100px) {
-
-      .contact-grid { gap: 4rem; }
+      .section { padding: 64px 5%; }
+      #licenses { padding-top: 64px !important; padding-bottom: 64px !important; }
+      #benefits { padding-top: 64px; padding-bottom: 64px; }
+      .cta-banner { padding: 64px 5%; }
+      .licenses-layout { grid-template-columns: 1fr; gap: 0; text-align: center; }
+      .licenses-copy { max-width: none; }
+      .licenses-copy .section-label,
+      .licenses-copy .section-title,
+      .licenses-copy .section-sub { text-align: center; }
+      #licenses .doc-photo-grid { justify-content: center !important; justify-self: center !important; width: 100%; }
+      .doc-photo-card { margin: 0 auto; width: min(100%, 340px); }
+      .contact-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 402px);
+        gap: 50px;
+      }
     }
 
     /* Tablet — collapse heavy 2-column layouts */
@@ -1035,8 +1126,22 @@
       .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
       .steps-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
       .step-card:nth-child(3)::after { display: none; }
-      .tech-layout { grid-template-columns: 1fr; }
+      .tech-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .tech-text { max-width: none; padding-top: 0; }
+      .tech-map-wrap { padding: 2rem 1.5rem; margin-top: 2.5rem; border-radius: 20px; }
       .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-left { max-width: none; }
+      .contact-left p { max-width: 100%; }
+      .contact-form-wrap { justify-content: flex-start; }
+      .form-card { max-width: none; }
+      .licenses-layout { grid-template-columns: 1fr; gap: 0; text-align: center; }
+      .licenses-copy { max-width: none; }
+      .licenses-copy .section-label,
+      .licenses-copy .section-title,
+      .licenses-copy .section-sub { text-align: center; }
+      .licenses-copy .section-sub { max-width: 560px; margin: 0 auto; }
+      #licenses .doc-photo-grid { justify-content: center !important; }
+      .doc-photo-card { width: min(100%, 340px); margin: 0 auto; }
       .doc-photo-grid { grid-template-columns: repeat(2, 1fr); max-width: 560px; }
       .benefits-grid { grid-template-columns: 1fr; gap: 40px; }
       .benefits-sticky { position: relative; top: auto; order: -1; }
@@ -1054,22 +1159,33 @@
       .process-step {
         grid-template-columns: auto 1fr;
         gap: 1.25rem;
+        min-height: 0;
+        padding: 0.75rem 0;
       }
       .process-step .process-num {
         grid-column: 1;
         grid-row: 1;
+        width: 58px;
+        height: 58px;
+        font-size: 1.15rem;
+        border-width: 2px;
       }
       .process-step .process-card {
         grid-column: 2;
         grid-row: 1;
         text-align: left !important;
+        min-height: 0;
+        padding: 1.5rem;
       }
       .process-step > div:not(.process-card):not(.process-num) {
         display: none;
       }
       .process-timeline::before {
-        left: 27px;
+        left: 28px;
         transform: none;
+        width: 2px;
+        top: 29px;
+        bottom: 29px;
       }
     }
 
@@ -1279,45 +1395,19 @@
      BLOCK 4 — LICENSES
 ════════════════════════════════════ -->
 <section class="section section-center" id="licenses">
-  <div class="section-label reveal">Документы</div>
-  <h2 class="section-title reveal reveal-delay-1">Работаем<br/><em>в рамках закона</em></h2>
-  <p class="section-sub reveal reveal-delay-2">Kazsheld имеет все необходимые лицензии на осуществление охранной деятельности в Казахстане. Нажмите на документ для подробной информации.</p>
-
-  <div class="doc-photo-grid reveal reveal-delay-3">
-
-    <!-- Card 1 -->
-    <div class="doc-photo-card" data-index="0">
-      <div class="doc-stripe"></div>
-      <div class="doc-header">
-        <svg class="doc-emblem" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="20" stroke="#1a3a6b" stroke-width="2"/>
-          <path d="M24 8L28 18H38L30 24L33 34L24 28L15 34L18 24L10 18H20L24 8Z" fill="#1a3a6b" opacity="0.7"/>
-        </svg>
-        <div class="doc-issuer">Министерство внутренних дел<br/>Республики Казахстан</div>
-      </div>
-      <div class="doc-type">ЛИЦЕНЗИЯ</div>
-      <div class="doc-title-text">на осуществление охранной деятельности</div>
-      <div class="doc-lines">
-        <div class="doc-line"></div><div class="doc-line short"></div>
-        <div class="doc-line"></div><div class="doc-line medium"></div>
-        <div class="doc-line short"></div>
-      </div>
-      <div class="doc-serial">№ КЗ-0001-2024</div>
-      <div class="doc-footer">
-        <div class="doc-stamp">
-          <svg viewBox="0 0 44 44" fill="none">
-            <circle cx="22" cy="22" r="20" stroke="#1a3a6b" stroke-width="1.5" stroke-dasharray="3 2"/>
-            <circle cx="22" cy="22" r="14" stroke="#1a3a6b" stroke-width="1"/>
-            <text x="22" y="26" text-anchor="middle" font-size="6" fill="#1a3a6b" font-weight="bold">KAZSHELD</text>
-          </svg>
-        </div>
-        <div class="doc-sig">
-          <div class="doc-sig-line"></div>
-          <div class="doc-sig-label">Подпись / Қол</div>
-        </div>
-      </div>
+  <div class="licenses-layout">
+    <div class="licenses-copy">
+      <div class="section-label reveal">Документы</div>
+      <h2 class="section-title reveal reveal-delay-1">Работаем<br/><em>в рамках закона</em></h2>
+      <p class="section-sub reveal reveal-delay-2">Kazsheld имеет все необходимые лицензии на осуществление охранной деятельности в Казахстане. Нажмите на документ для подробной информации.</p>
     </div>
 
+    <div class="doc-photo-grid reveal reveal-delay-3">
+      <div class="doc-photo-card" data-index="0">
+        <img src="Paper Mockups.png" alt="Лицензия Kazsheld">
+        <div class="doc-hover-label">Открыть</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1427,99 +1517,80 @@
 <section class="section section-center" id="tech">
   <div class="section-label reveal">Технологии</div>
   <h2 class="section-title reveal reveal-delay-1">Установка и обслуживание<br/><em>систем безопасности</em></h2>
-  <div class="reveal reveal-delay-2" style="text-align:center; max-width:640px; margin:1.5rem auto 0;">
-    <p>Мы устанавливаем защитную технику под ключ и обеспечиваем её регулярное обслуживание, настройку и контроль работоспособности.</p>
-    <br/>
-    <p>Системы безопасности стабильно работают без сбоев и участия со стороны заказчика — вы занимаетесь бизнесом, мы занимаемся безопасностью.</p>
+  <div class="tech-layout">
+    <div class="tech-text reveal reveal-delay-2">
+      <p>Мы устанавливаем защитную технику под ключ и обеспечиваем её регулярное обслуживание, настройку и контроль работоспособности.</p>
+      <p>Системы безопасности стабильно работают без сбоев и участия со стороны заказчика — вы занимаетесь бизнесом, мы занимаемся безопасностью.</p>
+    </div>
+
+    <ul class="tech-features reveal reveal-delay-3">
+      <li>
+        <svg viewBox="0 0 18 18" fill="none" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+        IP-видеонаблюдение с записью 24/7
+      </li>
+      <li>
+        <svg viewBox="0 0 18 18" fill="none" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+        Системы контроля и управления доступом (СКУД)
+      </li>
+      <li>
+        <svg viewBox="0 0 18 18" fill="none" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+        Охранная и пожарная сигнализация
+      </li>
+      <li>
+        <svg viewBox="0 0 18 18" fill="none" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+        Периметральные датчики движения
+      </li>
+      <li>
+        <svg viewBox="0 0 18 18" fill="none" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
+        Интеграция всех систем в единый пульт управления
+      </li>
+    </ul>
   </div>
 
-  <div style="margin-top:24px; margin-bottom:24px; text-align:center;">
-    <div class="reveal reveal-delay-2" style="display:inline-block; width:min(100%, 1024px); background:#1f1f1f; border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:50px; overflow:visible;">
-      <div style="position:relative; width:100%; aspect-ratio:924/616; overflow:visible;">
+  <div class="tech-map-wrap reveal reveal-delay-2">
+    <div class="tech-map-stage">
+      <div class="tech-line" style="left:29.8%; top:11.3%; width:18.4%; transform:rotate(52deg);"></div>
+      <div class="tech-line" style="left:70.1%; top:11.3%; width:18.1%; transform:rotate(128deg);"></div>
+      <div class="tech-line" style="left:12.0%; top:50.0%; width:38.1%; transform:rotate(-6deg);"></div>
+      <div class="tech-line" style="left:87.2%; top:50.0%; width:38.1%; transform:rotate(186deg);"></div>
+      <div class="tech-line" style="left:31.6%; top:84.1%; width:16.8%; transform:rotate(-51deg);"></div>
+      <div class="tech-line" style="left:71.8%; top:84.1%; width:19%; transform:rotate(-137deg);"></div>
 
-        <!-- SVG dashed connection lines (curved) -->
-        <svg style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1;" viewBox="0 0 924 616" preserveAspectRatio="xMidYMid meet">
-          <path d="M 275,70 Q 337,150 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
-          <path d="M 648,70 Q 586,150 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
-          <path d="M 111,308 Q 286,268 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
-          <path d="M 806,308 Q 634,268 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
-          <path d="M 292,518 Q 346,452 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
-          <path d="M 663,518 Q 596,449 462,308" stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.9" fill="none" vector-effect="non-scaling-stroke"/>
-        </svg>
+      <div class="hotspot-dot" style="left:29.8%; top:11.3%;"></div>
+      <div class="hotspot-dot" style="left:70.1%; top:11.3%;"></div>
+      <div class="hotspot-dot" style="left:12.0%; top:50.0%;"></div>
+      <div class="hotspot-dot" style="left:87.2%; top:50.0%;"></div>
+      <div class="hotspot-dot" style="left:31.6%; top:84.1%;"></div>
+      <div class="hotspot-dot" style="left:71.8%; top:84.1%;"></div>
 
-        <!-- Office image (centered) -->
-        <img src="office-new.png" alt="Офис безопасности" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62.9%;pointer-events:none;z-index:2;">
+      <img class="tech-office" src="office-new.png" alt="Офис безопасности">
 
-        <!-- Golden dots with pulse -->
-        <div class="hotspot-dot" style="left:29.8%;top:11.3%;width:1.73%;aspect-ratio:1;"></div>
-        <div class="hotspot-dot" style="left:70.1%;top:11.3%;width:1.73%;aspect-ratio:1;"></div>
-        <div class="hotspot-dot" style="left:12.0%;top:50.0%;width:1.73%;aspect-ratio:1;"></div>
-        <div class="hotspot-dot" style="left:87.2%;top:50.0%;width:1.73%;aspect-ratio:1;"></div>
-        <div class="hotspot-dot" style="left:31.6%;top:84.1%;width:1.73%;aspect-ratio:1;"></div>
-        <div class="hotspot-dot" style="left:71.8%;top:84.1%;width:1.73%;aspect-ratio:1;"></div>
-
-        <!-- Hub / Пожарная сигнализация (top-left) -->
-        <div class="device-hotspot" style="left:17.2%;top:0%;width:10.5%;z-index:4;">
-          <img src="device-hub.png" alt="Хаб">
-          <div class="hotspot-tooltip"><h4>Пожарная сигнализация</h4><p>Адресные дымовые и тепловые датчики с автоматическим оповещением</p><div class="tooltip-arrow"></div></div>
-        </div>
-
-        <!-- Camera / IP-камеры 360° (top-right) -->
-        <div class="device-hotspot" style="left:71.8%;top:-1.7%;width:12.6%;z-index:4;">
-          <img src="device-camera.png" alt="Камера">
-          <div class="hotspot-tooltip"><h4>IP-камеры 360°</h4><p>Панорамное видеонаблюдение с ночным режимом, запись 24/7 на облако</p><div class="tooltip-arrow"></div></div>
-        </div>
-
-        <!-- Remote / Охранная сигнализация (left) -->
-        <div class="device-hotspot" style="left:-0.76%;top:39.2%;width:14.3%;z-index:4;">
-          <img src="device-remote.png" alt="Пульт">
-          <div class="hotspot-tooltip"><h4>Охранная сигнализация</h4><p>Датчики вибрации и разбития стекла, интегрированные с пультом охраны</p><div class="tooltip-arrow"></div></div>
-        </div>
-
-        <!-- Motion / Датчики движения (right) -->
-        <div class="device-hotspot" style="left:85.8%;top:39.2%;width:14.3%;z-index:4;">
-          <img src="device-motion.png" alt="Датчик движения">
-          <div class="hotspot-tooltip"><h4>Датчики движения</h4><p>Инфракрасные периметральные датчики с зоной охвата 12 м</p><div class="tooltip-arrow"></div></div>
-        </div>
-
-        <!-- Keypad / СКУД на входе (bottom-left) -->
-        <div class="device-hotspot" style="left:17.8%;top:72.6%;width:15.5%;z-index:4;">
-          <img src="device-keypad.png" alt="Клавиатура">
-          <div class="hotspot-tooltip"><h4>СКУД на входе</h4><p>Биометрический считыватель и электромагнитный замок с журналом доступа</p><div class="tooltip-arrow"></div></div>
-        </div>
-
-        <!-- Siren / Проводная сирена (bottom-right) -->
-        <div class="device-hotspot" style="left:72.8%;top:72.6%;width:15.4%;z-index:4;">
-          <img src="device-siren.png" alt="Сирена">
-          <div class="hotspot-tooltip"><h4>Проводная сирена</h4><p>Проводная сирена с креплением для брендированной лицевой панели. Для использования на улице и в помещении.</p><div class="tooltip-arrow"></div></div>
-        </div>
-
+      <div class="device-hotspot" style="left:17.2%; top:0%; width:10.5%;">
+        <img src="device-hub.png" alt="Хаб">
+        <div class="hotspot-tooltip"><h4>Пожарная сигнализация</h4><p>Адресные дымовые и тепловые датчики с автоматическим оповещением</p><div class="tooltip-arrow"></div></div>
+      </div>
+      <div class="device-hotspot" style="left:71.8%; top:-1.7%; width:12.6%;">
+        <img src="device-camera.png" alt="Камера">
+        <div class="hotspot-tooltip"><h4>IP-видеонаблюдение</h4><p>Панорамное видеонаблюдение с ночным режимом и записью 24/7</p><div class="tooltip-arrow"></div></div>
+      </div>
+      <div class="device-hotspot" style="left:-0.76%; top:39.2%; width:14.3%;">
+        <img src="device-remote.png" alt="Пульт">
+        <div class="hotspot-tooltip"><h4>Управление доступом</h4><p>Контроль сценариев охраны и быстрый доступ к постановке на сигнализацию</p><div class="tooltip-arrow"></div></div>
+      </div>
+      <div class="device-hotspot" style="left:85.8%; top:39.2%; width:14.3%;">
+        <img src="device-motion.png" alt="Датчик движения">
+        <div class="hotspot-tooltip"><h4>Датчики движения</h4><p>Инфракрасные датчики для охраны помещений и периметра</p><div class="tooltip-arrow"></div></div>
+      </div>
+      <div class="device-hotspot" style="left:17.8%; top:72.6%; width:15.5%;">
+        <img src="device-keypad.png" alt="Клавиатура">
+        <div class="hotspot-tooltip"><h4>СКУД на входе</h4><p>Биометрический считыватель и электромагнитный замок с журналом доступа</p><div class="tooltip-arrow"></div></div>
+      </div>
+      <div class="device-hotspot" style="left:72.8%; top:72.6%; width:15.4%;">
+        <img src="device-siren.png" alt="Сирена">
+        <div class="hotspot-tooltip"><h4>Оповещение и тревога</h4><p>Звуковая и световая индикация при нештатных ситуациях</p><div class="tooltip-arrow"></div></div>
       </div>
     </div>
   </div>
-
-  <ul style="list-style:none; margin-top:2rem; display:inline-flex; flex-direction:column; gap:0.8rem; align-items:flex-start;" class="reveal reveal-delay-3">
-    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
-      IP-видеонаблюдение с записью 24/7
-    </li>
-    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
-      Системы контроля и управления доступом (СКУД)
-    </li>
-    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
-      Охранная и пожарная сигнализация
-    </li>
-    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
-      Периметральные датчики движения
-    </li>
-    <li style="display:flex;gap:0.8rem;align-items:center;font-size:0.9rem;color:var(--muted)">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
-      Интеграция всех систем в единый пульт управления
-    </li>
-  </ul>
 </section>
 
 <!-- ════════════════════════════════════
@@ -1612,9 +1683,8 @@
 <section class="section" id="contact">
   <div class="contact-grid">
     <div class="contact-left">
-      <div class="accent-line reveal"></div>
       <h2 class="reveal reveal-delay-1">Запишитесь на<br/><em>бесплатную консультацию</em></h2>
-      <p class="reveal reveal-delay-2">Специалист Kazsheld свяжется с вами в течение 30 минут в рабочее время, выслушает задачу и предложит оптимальное решение без обязательств.</p>
+      <p class="reveal reveal-delay-2">Специалист Kazsheld свяжется с вами в рабочее время, выслушает задачу и предложит оптимальное решение без обязательств.</p>
       <div class="trust-items reveal reveal-delay-3">
         <div class="trust-item">
           <svg class="trust-check" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l4 4 8-8"/></svg>
@@ -1635,10 +1705,10 @@
       </div>
     </div>
 
-    <div class="reveal reveal-delay-2">
+    <div class="contact-form-wrap reveal reveal-delay-2">
       <div class="form-card">
         <h3>Оставьте заявку</h3>
-        <p class="form-sub">Ответим в течение 30 минут</p>
+        <p class="form-sub">Ответим в течение ближайшего времени</p>
         <form id="leadForm" onsubmit="submitForm(event)">
           <div class="form-group">
             <label>Ваше имя</label>
@@ -1705,7 +1775,7 @@
   </div>
   <div class="footer-bottom">
     <span>© 2025 Kazsheld. Все права защищены.</span>
-    <span>ИИН / БИН: 123456789012 | Лицензия МВД РК</span>
+    <span>ИИН / БИН: 250540031583 | Лицензия МВД РК</span>
     <a href="#">Политика конфиденциальности</a>
   </div>
 </footer>
